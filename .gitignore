@@ -1,3 +1,8 @@
+### CONFIGURATION FILES ###
+config.toml
+
+
+### DEFAULT NODE GITIGNORE ###
 # Logs
 logs
 *.log
