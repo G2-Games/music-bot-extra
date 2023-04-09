@@ -1,7 +1,12 @@
 // Add required libraries
 const fs = require('fs-extra')
 const path = require('node:path');
-const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
+const {
+    Client,
+    Collection,
+    Events,
+    GatewayIntentBits
+} = require('discord.js');
 
 // Read the config file
 const { token } = require('./config.json');
@@ -24,15 +29,18 @@ for (const file of eventFiles) {
     }
 }
 
-// Register the created command files
+// Register the created commands and cooldowns
 client.commands = new Collection();
+client.cooldowns = new Collection();
 const foldersPath = path.join(__dirname, 'commands');
 const commandFolders = fs.readdirSync(foldersPath);
 
+// Find all subfolders
 for (const folder of commandFolders) {
     const commandsPath = path.join(foldersPath, folder);
     const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
 
+    // Find all commands
     for (const file of commandFiles) {
         const filePath = path.join(commandsPath, file);
         const command = require(filePath);
@@ -46,5 +54,5 @@ for (const folder of commandFolders) {
     }
 }
 
-// Log in to Discord with your client's token
+// Log in to Discord with the client token
 client.login(token);
