@@ -2,6 +2,9 @@
 const fs = require('fs-extra')
 const path = require('node:path');
 const {
+    getVoiceConnection
+} = require('@discordjs/voice');
+const {
     Client,
     Collection,
     Events,
@@ -12,7 +15,12 @@ const {
 const { token } = require('./config.json');
 
 // Create a new client instance
-const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+const client = new Client({
+    intents: [
+        GatewayIntentBits.Guilds,
+        GatewayIntentBits.GuildVoiceStates
+    ]
+});
 
 
 // Grab all events from ./events
@@ -56,3 +64,9 @@ for (const folder of commandFolders) {
 
 // Log in to Discord with the client token
 client.login(token);
+
+process.on('SIGINT', () => {
+    console.log('\nProcess terminated with Control+C, leaving all voice channels');
+    console.log(getVoiceConnection(myVoiceChannel.guild.id));
+    process.exit();
+});

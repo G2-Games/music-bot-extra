@@ -5,17 +5,24 @@ const wait = require('node:timers/promises').setTimeout;
 module.exports = {
     cooldown: 5,
     data: new SlashCommandBuilder()
-        .setName('ping')
-        .setDescription('Experimental testing command!'),
+        .setName('play')
+        .setDescription('Play a song (Audio file or YouTube/Spotify)')
+        .addStringOption(option =>
+            option.setName('query')
+                .setDescription('YouTube or Spotify query')),
 
     async execute(interaction) {
         const voiceChannel = interaction.member.voice.channel;
+        const query = interaction.options.getString('query');
 
-        if (voiceChannel == null) {
-            return interaction.reply('You must be in a voice channel to use this command');
+        if (!voiceChannel) {
+            return interaction.reply({
+                content: 'You must be in a voice channel to use this command!',
+                ephemeral: true
+            });
         }
 
-        /*
+        // Create the media controls
         const row = new ActionRowBuilder()
             .addComponents(
                 new ButtonBuilder()
@@ -34,21 +41,24 @@ module.exports = {
                     .setEmoji('⏭'),
             );
 
-        await interaction.reply({
-            content: 'I think you should,',
-            components: [row]
-        });*/
-
         try {
             const connection = joinVoiceChannel({
-                channelId: interaction.member.voice.channel.id,
-                guildId: interaction.guild.id,
+                channelId:      interaction.member.voice.channel.id,
+                guildId:        interaction.guild.id,
                 adapterCreator: interaction.guild.voiceAdapterCreator,
             });
-            interaction.reply(`Joined voice channel ${voiceChannel.name}`);
         } catch (error) {
             console.error(error);
-            interaction.reply('Failed to join voice channel');
+            interaction.reply({
+                content: 'ERROR: Could not join voice channel',
+                ephemeral: true
+            });
+            return;
         }
+
+        await interaction.reply({
+            content: '[PLACEHOLDER] Music Information Stuffs',
+            components: [row]
+        });
     },
 };
