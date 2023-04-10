@@ -29,7 +29,7 @@ for (const file of eventFiles) {
     }
 }
 
-// Register the created commands and cooldowns
+// Register the created commands and cooldown
 client.commands = new Collection();
 client.cooldowns = new Collection();
 const foldersPath = path.join(__dirname, 'commands');
