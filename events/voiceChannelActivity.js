@@ -12,10 +12,10 @@ module.exports = {
         //console.log(member);
 
         if (channelId) {
-            console.log(`${member.user.tag} join ${channelId}`);
+            console.log(`${member.user.tag} joined ${channelId}`);
             return;
         } else {
-            console.log(`${member.user.tag} left ${channelIdOld}`);
+            console.log(`${member.user.tag} left\ \  ${channelIdOld}`);
         }
     },
 };

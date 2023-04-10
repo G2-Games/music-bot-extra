@@ -4,21 +4,37 @@ const wait = require('node:timers/promises').setTimeout;
 
 module.exports = {
     cooldown: 5,
+
+    // Set up the command options
     data: new SlashCommandBuilder()
         .setName('play')
         .setDescription('Play a song (Audio file or YouTube/Spotify)')
         .addStringOption(option =>
-            option.setName('query')
-                .setDescription('YouTube or Spotify query')
-                .setRequired(true)),
+            option
+                .setName('query')
+                .setDescription('Song search query.'))
+        .addAttachmentOption(option =>
+            option
+                .setName('file')
+                .setDescription('An audio file to play')),
 
     async execute(interaction) {
         const voiceChannel = interaction.member.voice.channel;
         const query = interaction.options.getString('query');
+        const file = interaction.options.getAttachment('file');
 
+        // Ensure the user is in a voice channel
         if (!voiceChannel) {
             return interaction.reply({
                 content: 'You must be in a voice channel to use this command!',
+                ephemeral: true
+            });
+        }
+
+        // Ensure the user input a valid query or file
+        if (!query && !file || file.contentType.split('/')[0] != 'audio' || 'video') {
+            return interaction.reply({
+                content: 'Please include a valid query or audio file.',
                 ephemeral: true
             });
         }
