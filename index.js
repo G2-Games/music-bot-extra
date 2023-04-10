@@ -66,7 +66,7 @@ for (const folder of commandFolders) {
 client.login(token);
 
 process.on('SIGINT', () => {
-    console.log('\nProcess terminated with Control+C, leaving all voice channels');
-    console.log(getVoiceConnection(myVoiceChannel.guild.id));
+    console.log('\nProcess terminated with Ctl + C, cleaning up before exiting');
+    // TODO: Perform some cleanup here when necessary
     process.exit();
 });

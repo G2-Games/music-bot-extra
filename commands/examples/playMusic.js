@@ -9,7 +9,8 @@ module.exports = {
         .setDescription('Play a song (Audio file or YouTube/Spotify)')
         .addStringOption(option =>
             option.setName('query')
-                .setDescription('YouTube or Spotify query')),
+                .setDescription('YouTube or Spotify query')
+                .setRequired(true)),
 
     async execute(interaction) {
         const voiceChannel = interaction.member.voice.channel;
